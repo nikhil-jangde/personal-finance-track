@@ -18,9 +18,11 @@ function Overview({ selectedMonth, selectedYear }) {
 
 
     useEffect(() => {
-        async function fetchOverview() {
+        const fetchOverview = async () => {
             try {
-                const response = await fetch('/api/overview');
+                const timestamp = new Date().getTime(); // Generate a unique timestamp
+                const url = `/api/overview?timestamp=${timestamp}`; // Append timestamp as query parameter
+                const response = await fetch(url);
                 if (!response.ok) {
                     throw new Error('Failed to fetch transactions');
                 }
@@ -29,10 +31,11 @@ function Overview({ selectedMonth, selectedYear }) {
             } catch (error) {
                 console.error(error);
             }
-        }
+        };
+        
 
         fetchOverview()
-    }, []);
+    }, [overviewData]);
 
 
 

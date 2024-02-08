@@ -43,7 +43,9 @@ function Dashboard() {
     useEffect(() => {
         async function fetchTransactions() {
             try {
-                const response = await fetch('/api/transaction');
+                const timestamp = new Date().getTime(); // Generate a unique timestamp
+                const url = `/api/transaction?timestamp=${timestamp}`; // Append timestamp as query parameter
+                const response = await fetch(url);
                 if (!response.ok) {
                     throw new Error('Failed to fetch transactions');
                 }
