@@ -1,0 +1,52 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --foreground-rgb: 255, 255, 255;
+    --background-start-rgb: 0, 0, 0;
+    --background-end-rgb: 0, 0, 0;
+  }
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background-color: rgb(28, 28, 28);
+}
+
+.home-br{border-bottom: 6px solid orange;}
+.dashboard-bg{
+  border-top:2px solid palevioletred;
+  border-bottom:2px solid palevioletred;
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+
+/* Styles to hide the scrollbar */
+.scrollbar-hide {
+  scrollbar-width: thin;  /* Firefox */
+  scrollbar-color: transparent transparent;  /* Firefox */
+  overflow: -moz-scrollbars-none;  /* Firefox */
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  width: 6px;  /* Chrome/Safari/Webkit */
+}
+
+.scrollbar-hide::-webkit-scrollbar-thumb {
+  background-color: transparent;  /* Chrome/Safari/Webkit */
+}
+
+
