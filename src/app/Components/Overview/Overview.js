@@ -32,7 +32,7 @@ function Overview({ selectedMonth, selectedYear }) {
         }
 
         fetchOverview()
-    }, [overviewData]);
+    }, []);
 
 
 
