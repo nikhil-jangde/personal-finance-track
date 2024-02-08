@@ -17,25 +17,26 @@ function Overview({ selectedMonth, selectedYear }) {
     
 
 
-    useEffect(() => {
-        const fetchOverview = async () => {
-            try {
-                const timestamp = new Date().getTime(); // Generate a unique timestamp
-                const url = `/api/overview?timestamp=${timestamp}`; // Append timestamp as query parameter
-                const response = await fetch(url);
-                if (!response.ok) {
-                    throw new Error('Failed to fetch transactions');
-                }
-                const data = await response.json();
-                setOverviewData(data.data);
-            } catch (error) {
-                console.error(error);
-            }
-        };
-        
+  useEffect(() => {
+    const fetchOverview = async () => {
+      try {
+        const timestamp = new Date().getTime(); // Generate a unique timestamp
+        const url = `/api/overview?timestamp=${timestamp}`; // Append timestamp as query parameter
+        const response = await fetch(url, {
+          cache: 'no-store',
+        });
+        if (!response.ok) {
+          throw new Error('Failed to fetch overview data');
+        }
+        const data = await response.json();
+        setOverviewData(data.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
 
-        fetchOverview()
-    }, [overviewData]);
+    fetchOverview();
+  }, [overviewData]);
 
 
 
