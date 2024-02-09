@@ -19,6 +19,7 @@ function Overview({ selectedMonth, selectedYear }) {
     const [totalSpendings, setTotalSpendings] = useState(0);
     const [spendingData, setSpendingData] = useState();
 
+<<<<<<< HEAD
     useEffect(() => {
         async function fetchOverview() {
             try {
@@ -32,9 +33,28 @@ function Overview({ selectedMonth, selectedYear }) {
                 console.error(error);
             }
         }
+=======
+  useEffect(() => {
+    const fetchOverview = async () => {
+      try {
+        const timestamp = new Date().getTime(); // Generate a unique timestamp
+        const url = `/api/overview?timestamp=${timestamp}`; // Append timestamp as query parameter
+        const response = await fetch(url, {
+          cache: 'no-store',
+        });
+        if (!response.ok) {
+          throw new Error('Failed to fetch overview data');
+        }
+        const data = await response.json();
+        setOverviewData(data.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+>>>>>>> a71b3243a30a127a2e42584cc704f03ce3adf98a
 
-        fetchOverview()
-    }, [overviewData]);
+    fetchOverview();
+  }, [overviewData]);
 
     useEffect(() => {
         if (selectedMonth && selectedYear) {
