@@ -17,6 +17,7 @@ import { IoIosRemoveCircle } from "react-icons/io";
 
 function Dashboard() {
 
+    // State variables for form visibility and form data
     const [isFormVisible, setIsFormVisible] = useState(false);
     const [selectedMonth, setSelectedMonth] = useState('');
     const [selectedYear, setSelectedYear] = useState('');
@@ -28,24 +29,26 @@ function Dashboard() {
         date: '',
     });
 
-
+    // Function to show the form
     const showForm = () => setIsFormVisible(true);
+
+    // Function to hide the form
     const hideForm = () => setIsFormVisible(false);
 
+    // Function to handle input change in the form
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormData((prevData) => ({ ...prevData, [name]: value }));
     };
 
-
+    // State variable for transactions
     const [transactions, setTransactions] = useState([]);
 
+    // Fetch transactions on component mount
     useEffect(() => {
         async function fetchTransactions() {
             try {
-                const timestamp = new Date().getTime(); // Generate a unique timestamp
-                const url = `/api/transaction?timestamp=${timestamp}`; // Append timestamp as query parameter
-                const response = await fetch(url);
+                const response = await fetch('/api/transaction');
                 if (!response.ok) {
                     throw new Error('Failed to fetch transactions');
                 }
@@ -59,6 +62,7 @@ function Dashboard() {
         fetchTransactions();
     }, [transactions]);
 
+    // Function to handle form submission
     const handleSubmit = async (e) => {
         e.preventDefault();
 
@@ -91,8 +95,7 @@ function Dashboard() {
         }
     };
 
-
-
+    // Function to format date
     const formatDate = (dateString) => {
         const date = new Date(dateString);
         const day = date.getDate();
@@ -101,12 +104,12 @@ function Dashboard() {
         return `${day}/${month < 10 ? '0' + month : month}/${year}`;
     };
 
-
+    // Get current date and month
     const currentDate = new Date();
     const currentMonth = currentDate.getMonth() + 1; // Month is zero-based
     const currentYear = currentDate.getFullYear();
 
-
+    // Set selected month and year on component mount
     useEffect(() => {
         setSelectedMonth(currentMonth.toString());
         setSelectedYear(currentYear.toString());
@@ -114,10 +117,12 @@ function Dashboard() {
 
     return (
         <div className='w-full min-h-screen bg-gray-900 rounded-3xl dashboard-bg md:p-12 lg:p-12 p-4'>
-            <div className='w-full  h-auto grid grid-cols-1 md:grid-cols-3 sm:grid-cols-1 pb-6 lg:grid-cols-3'>
+            <div className='w-full h-auto grid grid-cols-1 md:grid-cols-3 sm:grid-cols-1 pb-6 lg:grid-cols-3'>
+                {/* Header */}
                 <div className='text-3xl text-white font-semibold flex justify-start'>
                     TrackFinance <Image className='h-10 w-6 mx-2 ' src={logo} />
                 </div>
+                {/* Search and profile */}
                 <div className='flex sm:flex-wrap  items-center justify-end space-x-5'>
                     <input
                         type='text' placeholder='Search...'
@@ -128,6 +133,7 @@ function Dashboard() {
                         <button className=' absolute ml-3 top-0 bottom-0 right-[-3vh]'><FaAngleDown /></button>
                     </div>
                 </div>
+                {/* Bell and envelope icons */}
                 <div className='flex justify-end items-center space-x-4 mt-3 relative'>
                     <FaRegBell className=' cursor-pointer' />
                     <div className='relative cursor-pointer'>
@@ -139,6 +145,7 @@ function Dashboard() {
 
             {/* Sections for overview , transactions , graphical representation*/}
             <div className=" w-[65%] flex justify-end px-4">
+                {/* Month and year selection */}
                 <select
                     className="mr-2 px-2 py-1 rounded text-white bg-gray-800 border-gray-300"
                     value={selectedMonth}
@@ -178,20 +185,20 @@ function Dashboard() {
                 <Overview selectedMonth={selectedMonth} selectedYear={selectedYear} />
 
                 <div className=' lg:w-[35%] md:w-[35%] space-y-3 w-full mt-5 p-3 max-h-[110vh] overflow-y-auto scrollbar-hide rounded-2xl border border-white'>
-                <div className='w-full relative h-[35vh] rounded-2xl border border-gray-500 bg-gradient-to-l from-blue-400 via-blue-600 to-blue-900 p-7 flex flex-col justify-between'>
-    <div className='flex relative justify-between'>
-        <h1 className='text-xl font-bold'>My Wallet</h1>
-        <h1 className='text-white'>***256</h1>
-    </div>
-    <div className='flex justify-between'>
-        <h1 className='text-2xl font-bold text-white'>₹ 4,936.56</h1>
-        <h1 className='font-serif font-semibold text-xl'>Visa</h1>
-    </div>
-    <div className='absolute z-50 top-0 bottom-0 left-0 right-0 text-3xl text-white font-semibold flex items-center opacity-20 justify-center'>
-        <span>TrackFinance</span>
-        <Image className='h-10 w-6 mx-2' src={logo} />
-    </div>
-</div>
+                    <div className='w-full relative lg:h-[35vh] h-[25vh] rounded-2xl border border-gray-500 bg-gradient-to-l from-blue-400 via-blue-600 to-blue-900 p-7 flex flex-col justify-between'>
+                        <div className='flex relative justify-between'>
+                            <h1 className='text-xl font-bold'>My Wallet</h1>
+                            <h1 className='text-white'>***256</h1>
+                        </div>
+                        <div className='flex justify-between'>
+                            <h1 className='text-2xl font-bold text-white'>₹ 4,936.56</h1>
+                            <h1 className='font-serif font-semibold text-xl'>Visa</h1>
+                        </div>
+                        <div className='absolute z-50 top-0 bottom-0 left-0 right-0 text-3xl text-white font-semibold flex items-center opacity-20 justify-center'>
+                            <span>TrackFinance</span>
+                            <Image className='h-10 w-6 mx-2' src={logo} />
+                        </div>
+                    </div>
 
                     <div className='w-full min-h-[10vh] rounded-2xl border border-gray-500 bg-gradient-to-t from-gray-700 via-gray-800 to-gray-900  '>
                         <div className=' flex justify-center'>

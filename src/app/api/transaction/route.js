@@ -13,14 +13,16 @@ export async function GET(request) {
         return NextResponse.json({ error: "Failed to fetch transactions" }, { status: 500 });
     }
 }
-
 export async function POST(request) {
     try {
         const { description, category, date, amount, type } = await request.json();
         await connectDB();
 
+        // Convert amount to number
+        const parsedAmount = parseFloat(amount);
+
         // Create the transaction
-        await Transactions.create({ description, category, date, amount, type });
+        await Transactions.create({ description, category, date, amount: parsedAmount, type });
 
         // Find or create the financial overview
         let financialOverview = await FinancialOverview.findOne();
@@ -36,12 +38,12 @@ export async function POST(request) {
         // Update the financial overview based on the transaction type
         if (type === 'credit') {
             // Update income
-            financialOverview.income.push({ amount, date: new Date(date) }); // Use request date
-            financialOverview.totalBalance += amount;
+            financialOverview.income.push({ amount: parsedAmount, date: new Date(date) }); // Use request date
+            financialOverview.totalBalance += parsedAmount;
         } else if (type === 'debit') {
             // Update spendings
-            financialOverview.spendings.push({ amount, date: new Date(date) }); // Use request date
-            financialOverview.totalBalance -= amount;
+            financialOverview.spendings.push({ amount: parsedAmount, date: new Date(date) }); // Use request date
+            financialOverview.totalBalance -= parsedAmount;
         }
         await financialOverview.save();
 
